@@ -28,10 +28,9 @@ jobs:
         with:
           msbuild-architecture: x64
         
-      - working-directory: ${{ env.libraryName }}/src
+      - working-directory: ${{ env.libraryName }}
         shell: cmd
-        run: msbuild cfimager.sln /build release
-        
+        run: msbuild /m /p:Configuration=RelWithDebInfo .\src\cfimager.sln
       # - name: Archive Release
       #   uses: thedoctor0/zip-release@master
       #   with:
