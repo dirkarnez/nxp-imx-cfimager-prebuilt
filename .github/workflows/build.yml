@@ -30,7 +30,9 @@ jobs:
         
       - working-directory: ${{ env.libraryName }}
         shell: cmd
-        run: msbuild /m /p:Configuration=RelWithDebInfo .\src\cfimager.sln
+        run: msbuild /m .\src\cfimager.sln
+
+      #  /p:Configuration=RelWithDebInfo 
       # - name: Archive Release
       #   uses: thedoctor0/zip-release@master
       #   with:
