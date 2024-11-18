@@ -22,15 +22,15 @@ jobs:
           path: ${{ env.libraryName }}
           submodules: true
           
-      - uses: ilammy/msvc-dev-cmd@v1
-        with:
-          sdk: 8.1
-          
       # - uses: seanmiddleditch/gha-setup-vsdevenv@master
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: x64
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          sdk: 8.1
         
       - working-directory: ${{ env.libraryName }}
         shell: cmd
