@@ -1,0 +1,43 @@
+name: cpp-cmake-mingw-prebuilt-release-actions-workflow
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - '*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+permissions:
+    contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      libraryName: CactusViewer
+      tagName: master-2.0
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: Wassimulator/CactusViewer
+          ref: ${{ env.tagName }}
+          path: ${{ env.libraryName }}
+          submodules: true
+          
+      - uses: seanmiddleditch/gha-setup-vsdevenv@master
+      
+      - working-directory: ${{ env.libraryName }}
+        shell: cmd
+        run: b.bat release 
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          path: CactusViewer.exe
+          directory: "${{ env.libraryName }}/bin"
+          filename: "${{ env.libraryName }}-${{ github.ref_name }}.zip"
+        
+      - name: Release prebuilt
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "${{ env.libraryName }}/bin/${{ env.libraryName }}-${{ github.ref_name }}.zip"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
